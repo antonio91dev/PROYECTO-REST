@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import com.control.personal.empresa.repositorios.EmpleadoRepository;
+import com.control.personal.empresa.repositorios.PersonaRepository;
 
 @SpringBootApplication
 public class ProyectoRestSpringApplication {
@@ -22,7 +22,7 @@ public class ProyectoRestSpringApplication {
 	 * @return
 	 */
 	@Bean
-    CommandLineRunner init(EmpleadoRepository empleadoRepository) {
+    CommandLineRunner init(PersonaRepository personaRepository) {
         return (args) -> {
             //Empleado empleado = new Empleado("123123","nombre 213123", LocalDate.now());
             //empleadoRepository.save(empleado);
