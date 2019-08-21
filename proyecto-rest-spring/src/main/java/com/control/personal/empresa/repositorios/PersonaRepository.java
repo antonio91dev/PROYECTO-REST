@@ -2,19 +2,15 @@ package com.control.personal.empresa.repositorios;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.control.personal.empresa.modelo.Empleado;
+import com.control.personal.empresa.modelo.Persona;
 
 /**
  * The Interface EmpleadoRepository.
  */
-public interface EmpleadoRepository extends JpaRepository<Empleado, Long>{
+public interface PersonaRepository extends JpaRepository<Persona, Long>{
 	
-	/**
-	 * Find empleado by pis.
-	 *
-	 * @param pis the pis
-	 * @return the empleado
-	 */
-	Empleado findEmpleadoByPis(String pis);
+	Persona findPersonaByPis(String pis);
+	Boolean existsByPis(String pis);
+	
 	
 }

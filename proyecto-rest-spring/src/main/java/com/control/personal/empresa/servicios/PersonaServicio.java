@@ -1,50 +1,55 @@
 package com.control.personal.empresa.servicios;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.TextStyle;
+import java.time.temporal.ChronoUnit;
+import java.util.Locale;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.control.personal.empresa.modelo.Empleado;
-import com.control.personal.empresa.repositorios.EmpleadoRepository;
+import com.control.personal.empresa.modelo.Horario;
+import com.control.personal.empresa.modelo.Persona;
+import com.control.personal.empresa.repositorios.PersonaRepository;
 
 /**
  * The Class EmpleadoServicio.
  */
 @Service
-public class EmpleadoServicio {
-	
+public class PersonaServicio {
+
 	@Autowired
-	EmpleadoRepository repositorio;
-	
-	/**
-	 * Registrar.
-	 *
-	 * @param e the e
-	 * @return the empleado
-	 */
-	public Empleado registrar(Empleado e) {
+	PersonaRepository repositorio;
+
+	@Autowired
+	HorarioServicio horarioServicio;
+
+	public Persona registrar(Persona e) {
 		return repositorio.save(e);
 	}
-	
-	/**
-	 * Find by id.
-	 *
-	 * @param id the id
-	 * @return the empleado
-	 */
-	public Empleado findById(long id) {
+
+	public Persona registrarIngreso(Persona persona,Horario horario ) {
+		
+		horario.setPersona(persona);
+		persona.getHorario().add(horario);
+		return repositorio.save(persona);
+
+	}
+
+	public Persona buscarPorId(long id) {
 		return repositorio.findById(id).orElse(null);
 	}
-	
-	/**
-	 * Buscar por email.
-	 *
-	 * @param pis the pis
-	 * @return the empleado
-	 */
-	public Empleado buscarPorEmail(String pis) {
-		return repositorio.findEmpleadoByPis(pis);
+
+	public Persona buscarPersonaPorPIS(String pis) {
+		return repositorio.findPersonaByPis(pis);
 	}
-	
+
+	public Boolean existePIS(String pis) {
+		return repositorio.existsByPis(pis);
+	}
 	
 
 }

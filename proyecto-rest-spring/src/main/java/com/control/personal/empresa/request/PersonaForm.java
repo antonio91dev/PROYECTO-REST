@@ -2,7 +2,7 @@ package com.control.personal.empresa.request;
 
 import javax.validation.constraints.NotBlank;
 
-public class EmpleadoForm {
+public class PersonaForm {
 
 	@NotBlank	
 	 private String pis;
