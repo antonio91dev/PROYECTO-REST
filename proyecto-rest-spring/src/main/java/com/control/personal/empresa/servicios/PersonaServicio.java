@@ -10,9 +10,7 @@ import com.control.personal.empresa.modelo.Persona;
 import com.control.personal.empresa.modelo.dto.PersonaDto;
 import com.control.personal.empresa.repositorios.PersonaRepository;
 
-/**
- * The Class EmpleadoServicio.
- */
+
 @Service
 public class PersonaServicio {
 
@@ -53,5 +51,10 @@ public class PersonaServicio {
 	public List<PersonaDto> findDetailMesByPis(String pis) {
 		return repositorio.findDetailMesByPis(pis);
 	}
+	
+	public List<PersonaDto> findDetailALLByPis(String pis){
+		return repositorio.findDetailALLByPis(pis);
+	}
+
 
 }

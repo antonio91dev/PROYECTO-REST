@@ -88,7 +88,7 @@ public class PersonaController {
 	}
 	
 	
-	@GetMapping(path = "/detail/dia")
+	@GetMapping(path = "/detail/mes")
     public ResponseEntity<?> getDetailMes(@RequestHeader String pis) {
 
         if (pis.isEmpty()) {
@@ -105,7 +105,7 @@ public class PersonaController {
     }
 	
 	
-	@GetMapping(path = "/detail/mes")
+	@GetMapping(path = "/detail/dia")
     public ResponseEntity<?> getDetailDia(@RequestHeader String pis) {
 
         if (pis.isEmpty()) {
@@ -121,6 +121,22 @@ public class PersonaController {
         return new ResponseEntity<>(lstpersona, HttpStatus.OK);
     }
 	
+	
+	@GetMapping(path = "/detail/all")
+    public ResponseEntity<?> getDetailAll(@RequestHeader String pis) {
+
+        if (pis.isEmpty()) {
+        	ErrorResponseDto error = new ErrorResponseDto("Listado Persona por All ", "PIS vacio");
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        }
+
+        List<PersonaDto> lstpersona = personaServicio.findDetailALLByPis(pis);
+        if (lstpersona.isEmpty()) {
+        	ErrorResponseDto error = new ErrorResponseDto("Listado Persona por All ", "PIS no tiene registro ");
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(lstpersona, HttpStatus.OK);
+    }
 	
 	
 //	@GetMapping("/searchCargo")

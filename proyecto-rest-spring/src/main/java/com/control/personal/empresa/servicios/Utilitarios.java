@@ -227,5 +227,19 @@ public class Utilitarios {
 			return null;
 		}
 	}
+	
+	public static String minuteToTime(int minute) {
+	    int hour = minute / 60;
+	    minute %= 60;
+	    String p = "AM";
+	    if (hour >= 12) {
+	        hour %= 12;
+	        p = "PM";
+	    }
+	    if (hour == 0) {
+	        hour = 12;
+	    }
+	    return (hour < 10 ? "0" + hour : hour) + ":" + (minute < 10 ? "0" + minute : minute) + " " + p;
+	}
 
 }

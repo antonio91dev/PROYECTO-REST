@@ -14,6 +14,11 @@ public interface PersonaRepository extends JpaRepository<Persona, Long> {
 	Persona findPersonaByPis(String pis);
 
 	Boolean existsByPis(String pis);
+	
+	@Query("SELECT new com.control.personal.empresa.modelo.dto.PersonaDto"
+			+ "(d.pis, DATE_FORMAT(e.ingresoDate,'%d - %b - %Y') , DATE_FORMAT(e.salidaDate,'%d - %b - %Y'),  e.minutosGanados) "
+			+ "FROM Persona d INNER JOIN d.horario e WHERE d.pis=?1 ")
+	List<PersonaDto> findDetailALLByPis(String pis);
 
 	@Query("SELECT new com.control.personal.empresa.modelo.dto.PersonaDto"
 			+ "(d.pis, DATE_FORMAT(e.ingresoDate,'%d - %b - %Y'),  SUM(e.minutosGanados)) "
