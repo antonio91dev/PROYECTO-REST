@@ -2,7 +2,6 @@ package com.control.personal.empresa.modelo;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -11,31 +10,75 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-
-
 @Entity
 @Table(name = "horario")
 public class Horario {
 
-	@Id @GeneratedValue
+	@Id
+	@GeneratedValue
 	private long id;
 
 	private LocalDateTime ingresoDate;
 
 	private LocalDateTime salidaDate;
-	
+
 	private long minutosGanados;
 
-	
 	private int estado;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "persona_id", nullable = false)
-    private Persona persona;
-	
-	
-	
-	
+	@JoinColumn(name = "persona_id", nullable = false)
+	private Persona persona;
+
+	public Horario(LocalDateTime ingresoDate, int estado) {
+		this.ingresoDate = ingresoDate;
+		this.estado = estado;
+	}
+
+	public Horario() {
+
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public LocalDateTime getIngresoDate() {
+		return ingresoDate;
+	}
+
+	public void setIngresoDate(LocalDateTime ingresoDate) {
+		this.ingresoDate = ingresoDate;
+	}
+
+	public LocalDateTime getSalidaDate() {
+		return salidaDate;
+	}
+
+	public void setSalidaDate(LocalDateTime salidaDate) {
+		this.salidaDate = salidaDate;
+	}
+
+	public int getEstado() {
+		return estado;
+	}
+
+	public void setEstado(int estado) {
+		this.estado = estado;
+	}
+
+	public Persona getPersona() {
+		return persona;
+	}
+
+	public void setPersona(Persona persona) {
+		this.persona = persona;
+	}
+
 	public long getMinutosGanados() {
 		return minutosGanados;
 	}
@@ -43,9 +86,6 @@ public class Horario {
 	public void setMinutosGanados(long minutosGanados) {
 		this.minutosGanados = minutosGanados;
 	}
-
-
-
 
 	@Override
 	public int hashCode() {
@@ -95,66 +135,5 @@ public class Horario {
 		return "Horario [id=" + id + ", ingresoDate=" + ingresoDate + ", salidaDate=" + salidaDate + ", estado="
 				+ estado + ", persona=" + persona + "]";
 	}
-
-	
-
-	public Horario(LocalDateTime ingresoDate, int estado) {
-		this.ingresoDate = ingresoDate;
-		this.estado = estado;
-	}
-
-	public Horario() {
-		
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public LocalDateTime getIngresoDate() {
-		return ingresoDate;
-	}
-
-	public void setIngresoDate(LocalDateTime ingresoDate) {
-		this.ingresoDate = ingresoDate;
-	}
-
-	public LocalDateTime getSalidaDate() {
-		return salidaDate;
-	}
-
-	public void setSalidaDate(LocalDateTime salidaDate) {
-		this.salidaDate = salidaDate;
-	}
-
-	
-
-	public int getEstado() {
-		return estado;
-	}
-
-	public void setEstado(int estado) {
-		this.estado = estado;
-	}
-
-	public Persona getPersona() {
-		return persona;
-	}
-
-	public void setPersona(Persona persona) {
-		this.persona = persona;
-	}
-
-	
-	
-
-	
-	
-	
-	
 
 }

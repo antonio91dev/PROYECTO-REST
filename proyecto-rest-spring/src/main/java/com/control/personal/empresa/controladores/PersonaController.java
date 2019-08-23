@@ -4,21 +4,25 @@
 package com.control.personal.empresa.controladores;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.control.personal.empresa.modelo.Horario;
 import com.control.personal.empresa.modelo.Persona;
-import com.control.personal.empresa.request.PersonaForm;
-import com.control.personal.empresa.response.ResponseData;
+import com.control.personal.empresa.modelo.dto.ErrorResponseDto;
+import com.control.personal.empresa.modelo.dto.PersonaDto;
+import com.control.personal.empresa.modelo.dto.RequestDto;
 import com.control.personal.empresa.servicios.HorarioServicio;
 import com.control.personal.empresa.servicios.PersonaServicio;
 import com.control.personal.empresa.servicios.Utilitarios;
@@ -33,41 +37,96 @@ public class PersonaController {
 	@Autowired
 	private HorarioServicio horarioServicio;
 
-	private Logger _log = LoggerFactory.getLogger(PersonaController.class);
+	private Logger log = LoggerFactory.getLogger(PersonaController.class);
 
-	@PostMapping("/create")
-	public @ResponseBody ResponseData create(@RequestBody PersonaForm personaRequest) {
-		ResponseData response = new ResponseData();
-		_log.info(ZoneId.systemDefault().toString());
-		LocalDateTime fechaRegistro = Utilitarios.parseFecha(personaRequest.getDateTime());
+	@PostMapping(path = "/create")
+	public ResponseEntity<?> create(@RequestBody RequestDto requestDto) {
 
-		if (personaServicio.existePIS(personaRequest.getPis())) {
+//		ErrorResponseDto error = new ErrorResponseDto("Not found", "Courier not found");
+//        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
 
-			Persona persona = personaServicio.buscarPersonaPorPIS(personaRequest.getPis());
+		LocalDateTime fechaRegistro = Utilitarios.parseFecha(requestDto.getDateTime());
+
+		if (personaServicio.existsByPis(requestDto.getPis())) {
+
+			Persona persona = personaServicio.findPersonaByPis(requestDto.getPis());
 			persona.setRegistroDate(fechaRegistro);
 			Horario horario = new Horario();
 
 			if (horarioServicio.existsByPersonaAndEstado(persona, 0)) {
-				
-				horario = horarioServicio.findByPersonaAndEstado(persona, 0);
-				horario.setSalidaDate(fechaRegistro);
-				horario.setEstado(1);
-				horario.setMinutosGanados(Utilitarios.obtenerMinutosRango(horario.getIngresoDate(), horario.getSalidaDate()));
 
+				horario = horarioServicio.findByPersonaAndEstado(persona, 0);
+
+				if (Utilitarios.validarEntreDosFechas(horario.getIngresoDate(), fechaRegistro)) {
+					horario.setSalidaDate(fechaRegistro);
+					horario.setEstado(1);
+					long minutos = Utilitarios.obtenerminutoRangoIngresoyEntrada(horario.getIngresoDate(),
+							fechaRegistro);
+					horario.setMinutosGanados(minutos);
+
+					personaServicio.save(persona, horario);
+					return new ResponseEntity<>(requestDto, HttpStatus.OK);
+				} else {
+					log.info("La Fecha de salida es incorrecta");
+					ErrorResponseDto error = new ErrorResponseDto("Validacion Fecha", "Fecha Incorrecta");
+					return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+				}
 			} else {
+
 				horario.setIngresoDate(fechaRegistro);
 				horario.setEstado(0);
+				personaServicio.save(persona, horario);
+				return new ResponseEntity<>(requestDto, HttpStatus.OK);
 			}
-			personaServicio.registrarIngreso(persona, horario);
-
 		} else {
-			Persona persona = new Persona(personaRequest.getPis(), fechaRegistro);
+			Persona persona = new Persona(requestDto.getPis(), fechaRegistro);
 			Horario horario = new Horario(fechaRegistro, 0);
-			personaServicio.registrarIngreso(persona, horario);
-
+			personaServicio.save(persona, horario);
+			return new ResponseEntity<>(requestDto, HttpStatus.OK);
 		}
 
-		return response;
 	}
+	
+	
+	@GetMapping(path = "/detail/dia")
+    public ResponseEntity<?> getDetailMes(@RequestHeader String pis) {
+
+        if (pis.isEmpty()) {
+        	ErrorResponseDto error = new ErrorResponseDto("Listado Persona por Mes ", "PIS vacio");
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        }
+
+        List<PersonaDto> lstpersona = personaServicio.findDetailMesByPis(pis);
+        if (lstpersona.isEmpty()) {
+        	ErrorResponseDto error = new ErrorResponseDto("Listado Persona por Mes ", "PIS no tiene registro ");
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(lstpersona, HttpStatus.OK);
+    }
+	
+	
+	@GetMapping(path = "/detail/mes")
+    public ResponseEntity<?> getDetailDia(@RequestHeader String pis) {
+
+        if (pis.isEmpty()) {
+        	ErrorResponseDto error = new ErrorResponseDto("Listado Persona por Dia ", "PIS vacio");
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        }
+
+        List<PersonaDto> lstpersona = personaServicio.findDetailDiaByPis(pis);
+        if (lstpersona.isEmpty()) {
+        	ErrorResponseDto error = new ErrorResponseDto("Listado Persona por Dia ", "PIS no tiene registro ");
+            return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(lstpersona, HttpStatus.OK);
+    }
+	
+	
+	
+//	@GetMapping("/searchCargo")
+//	public List<UsuarioModel> buscarCuentaCargo(
+//			@RequestParam(name = "cuenta") String cuenta, 
+//			@RequestParam(name = "cargo") int cargo){
+//		return serviceUsuario.buscarCuentaCargo(cuenta, cargo);
 
 }

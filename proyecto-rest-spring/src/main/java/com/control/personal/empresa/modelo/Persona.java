@@ -14,54 +14,48 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
-
 @Entity
 @Table(name = "persona")
 public class Persona {
 
-	
-	@Id @GeneratedValue
+	@Id
+	@GeneratedValue
 	private long id;
-	
-	@Column(nullable=false)
+
+	@Column(nullable = false)
 	@NotEmpty
 	private String pis;
-	
-	
-	private LocalDateTime registroDate;
-	
-	
-	@OneToMany(cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY,
-            mappedBy = "persona")
-    private Set<Horario> horario = new HashSet<>();
 
+	@Override
+	public String toString() {
+		return "Persona [id=" + id + ", pis=" + pis + ", registroDate=" + registroDate + ", horario=" + horario + "]";
+	}
+
+	private LocalDateTime registroDate;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "persona")
+	private Set<Horario> horario = new HashSet<>();
 
 	public Persona() {
-	
+
 	}
-	
-	
+
 	public Persona(@NotEmpty String pis, LocalDateTime registroDate) {
 		this.pis = pis;
 		this.registroDate = registroDate;
 	}
 
-
 	public long getId() {
 		return id;
 	}
-
 
 	public void setId(long id) {
 		this.id = id;
 	}
 
-
 	public String getPis() {
 		return pis;
 	}
-
 
 	public void setPis(String pis) {
 		this.pis = pis;
@@ -71,16 +65,13 @@ public class Persona {
 		return registroDate;
 	}
 
-
 	public void setRegistroDate(LocalDateTime registroDate) {
 		this.registroDate = registroDate;
 	}
 
-
 	public Set<Horario> getHorario() {
 		return horario;
 	}
-
 
 	public void setHorario(Set<Horario> horario) {
 		this.horario = horario;
