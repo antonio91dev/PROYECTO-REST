@@ -12,21 +12,20 @@ import com.control.personal.empresa.repositorios.HorarioRepository;
  */
 @Service
 public class HorarioServicio {
-	
+
 	@Autowired
 	HorarioRepository repositorio;
-	
-	
+
 	public Horario registrar(Horario e) {
 		return repositorio.save(e);
 	}
-	
-	public Horario findByPersonaAndEstado(Persona p ,int e) {
-		return repositorio.findByPersonaAndEstado(p , e);
+
+	public Horario findByPersonaAndEstado(Persona p, int e) {
+		return repositorio.findByPersonaAndEstado(p, e);
 	}
-	public Boolean existsByPersonaAndEstado(Persona p ,int e) {
-		return repositorio.existsByPersonaAndEstado(p , e);
+
+	public Boolean existsByPersonaAndEstado(Persona p, int e) {
+		return repositorio.existsByPersonaAndEstado(p, e);
 	}
-	
-	
+
 }

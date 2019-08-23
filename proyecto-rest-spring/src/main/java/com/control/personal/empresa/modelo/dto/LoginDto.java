@@ -1,14 +1,14 @@
-package com.control.personal.empresa.request;
+package com.control.personal.empresa.modelo.dto;
 
 import javax.validation.constraints.NotBlank;
 
-public class LoginForm {
-	
-	@NotBlank
-    private String user;
+public class LoginDto {
 
 	@NotBlank
-    private String password;
+	private String user;
+
+	@NotBlank
+	private String password;
 
 	public String getUser() {
 		return user;
@@ -43,7 +43,7 @@ public class LoginForm {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		LoginForm other = (LoginForm) obj;
+		LoginDto other = (LoginDto) obj;
 		if (password == null) {
 			if (other.password != null)
 				return false;
@@ -61,10 +61,5 @@ public class LoginForm {
 	public String toString() {
 		return "LoginForm [user=" + user + ", password=" + password + "]";
 	}
-    
-    
-    
-    
-    
 
 }

@@ -1,18 +1,13 @@
 package com.control.personal.empresa.servicios;
 
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.format.TextStyle;
-import java.time.temporal.ChronoUnit;
-import java.util.Locale;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.control.personal.empresa.modelo.Horario;
 import com.control.personal.empresa.modelo.Persona;
+import com.control.personal.empresa.modelo.dto.PersonaDto;
 import com.control.personal.empresa.repositorios.PersonaRepository;
 
 /**
@@ -31,25 +26,32 @@ public class PersonaServicio {
 		return repositorio.save(e);
 	}
 
-	public Persona registrarIngreso(Persona persona,Horario horario ) {
-		
+	public Persona save(Persona persona, Horario horario) {
+
 		horario.setPersona(persona);
 		persona.getHorario().add(horario);
 		return repositorio.save(persona);
 
 	}
 
-	public Persona buscarPorId(long id) {
+	public Persona findById(long id) {
 		return repositorio.findById(id).orElse(null);
 	}
 
-	public Persona buscarPersonaPorPIS(String pis) {
+	public Persona findPersonaByPis(String pis) {
 		return repositorio.findPersonaByPis(pis);
 	}
 
-	public Boolean existePIS(String pis) {
+	public Boolean existsByPis(String pis) {
 		return repositorio.existsByPis(pis);
 	}
-	
+
+	public List<PersonaDto> findDetailDiaByPis(String pis) {
+		return repositorio.findDetailDiaByPis(pis);
+	}
+
+	public List<PersonaDto> findDetailMesByPis(String pis) {
+		return repositorio.findDetailMesByPis(pis);
+	}
 
 }
