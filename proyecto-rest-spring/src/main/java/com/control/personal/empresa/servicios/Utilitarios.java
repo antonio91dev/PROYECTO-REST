@@ -203,29 +203,29 @@ public class Utilitarios {
 
 	public static String formatFecha(LocalDateTime fechaParseada, String dateFormato) {
 
-		try {
-
-			DateTimeFormatter mascaraFormato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//		try {
+			//yyyy-MM-dd HH:mm:ss
+			DateTimeFormatter mascaraFormato = DateTimeFormatter.ofPattern(dateFormato);
 
 			String formatDateTime = fechaParseada.format(mascaraFormato);
 
 			return formatDateTime;
 
-		} catch (DateTimeParseException ex) {
-			ex.printStackTrace();
-			return null;
-		}
+//		} catch (DateTimeParseException ex) {
+//			ex.printStackTrace();
+//			return null;
+//		}
 	}
 
 	public static LocalDateTime parseFecha(String Fecha) {
 
-		try {
+//		try {
 			LocalDateTime fechaParseada = LocalDateTime.parse(Fecha, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 			return fechaParseada;
-		} catch (DateTimeParseException ex) {
-			ex.printStackTrace();
-			return null;
-		}
+//		} catch (DateTimeParseException ex) {
+//			ex.printStackTrace();
+//			return null;
+//		}
 	}
 	
 	public static String minuteToTime(int minute) {

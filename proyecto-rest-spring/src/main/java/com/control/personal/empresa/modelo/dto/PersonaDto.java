@@ -1,5 +1,7 @@
 package com.control.personal.empresa.modelo.dto;
 
+import java.time.LocalDateTime;
+
 public class PersonaDto {
 
 	private String personaPis;
@@ -7,14 +9,13 @@ public class PersonaDto {
 	private String salidaDate;
 	private long minutosTrabajados;
 	private String horasDescanso;
+	private LocalDateTime salidaDatea;
 
 	public PersonaDto(String personaPis, String fechaIngreso, long minutosTrabajados) {
 		this.personaPis = personaPis;
 		this.fechaIngreso = fechaIngreso;
 		this.minutosTrabajados = minutosTrabajados;
 	}
-
-	
 
 	public PersonaDto(String personaPis, String fechaIngreso, String salidaDate, long minutosTrabajados) {
 		this.personaPis = personaPis;
@@ -23,7 +24,19 @@ public class PersonaDto {
 		this.minutosTrabajados = minutosTrabajados;
 	}
 
+	public PersonaDto(String salidaDate) {
+		this.salidaDate = salidaDate;
+	}
 
+
+
+	public LocalDateTime getSalidaDatea() {
+		return salidaDatea;
+	}
+
+	public void setSalidaDatea(LocalDateTime salidaDatea) {
+		this.salidaDatea = salidaDatea;
+	}
 
 	public String getPersonaPis() {
 		return personaPis;

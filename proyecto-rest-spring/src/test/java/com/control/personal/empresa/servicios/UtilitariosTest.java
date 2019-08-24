@@ -13,7 +13,7 @@ public class UtilitariosTest {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
+		//Utilitarios.obtenerRangoDia(fechaHoraInicio, fechaHoraFin)
 	}
 
 }

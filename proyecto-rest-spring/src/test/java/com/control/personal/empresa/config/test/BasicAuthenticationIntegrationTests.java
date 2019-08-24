@@ -27,7 +27,7 @@ public class BasicAuthenticationIntegrationTests {
 
 	@Test
 	public void logeoUsur() throws Exception {
-		this.mockMvc.perform(get("/").with(httpBasic("user", "password"))).andExpect(authenticated());
+		this.mockMvc.perform(get("/").with(httpBasic("user5", "password"))).andExpect(authenticated());
 	}
 
 	@Test

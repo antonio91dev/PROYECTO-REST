@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.control.personal.empresa.modelo.Horario;
 import com.control.personal.empresa.modelo.Persona;
+import com.control.personal.empresa.modelo.dto.HorarioDto;
 import com.control.personal.empresa.modelo.dto.PersonaDto;
 import com.control.personal.empresa.repositorios.PersonaRepository;
 
@@ -48,6 +49,7 @@ public class PersonaServicio {
 		return repositorio.findDetailDiaByPis(pis);
 	}
 
+
 	public List<PersonaDto> findDetailMesByPis(String pis) {
 		return repositorio.findDetailMesByPis(pis);
 	}
@@ -55,6 +57,12 @@ public class PersonaServicio {
 	public List<PersonaDto> findDetailALLByPis(String pis){
 		return repositorio.findDetailALLByPis(pis);
 	}
+	
+	public HorarioDto findValidateDiaByPis(String pis) {
+		return repositorio.findValidateDiaByPis(pis);
+	}
+	
+	
 
 
 }
